@@ -1,5 +1,4 @@
 #include "instructions.hpp"
-#include <iostream>
 
 // CLS
 void _00E0(Chip8& chip)
@@ -213,7 +212,7 @@ void _Dxyn(Chip8& chip)
 				{
 					chip.registers[0xF] = 1;
 				}
-                
+
 				*screenPixel ^= 1;
 			}
 		}
