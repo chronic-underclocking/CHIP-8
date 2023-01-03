@@ -4,19 +4,19 @@
 void OP_0(Chip8& chip)
 {
     InstructionTable f_table;
-    f_table.i_table[0x10 + (chip.opcode & 0x000Fu)](chip);
+    f_table[0x10 + (chip.opcode & 0x000Fu)](chip);
 }
 
 void OP_8(Chip8& chip)
 {
     InstructionTable f_table;
-    f_table.i_table[0x80 + (chip.opcode & 0x000Fu)](chip);
+    f_table[0x80 + (chip.opcode & 0x000Fu)](chip);
 }
 
 void OP_E(Chip8& chip)
 {
     InstructionTable f_table;
-    f_table.i_table[0xE0 + (chip.opcode & 0x000Fu)](chip);
+    f_table[0xE0 + (chip.opcode & 0x000Fu)](chip);
 }
 
 void OP_F(Chip8& chip)
@@ -24,15 +24,15 @@ void OP_F(Chip8& chip)
     InstructionTable f_table;
     if((chip.opcode & 0x00FFu) == 0x0055u)
     {
-        f_table.i_table[0xF1](chip);
+        f_table[0xF1](chip);
     }
     else if ((chip.opcode & 0x00FFu) == 0x0065u)
     {
-        f_table.i_table[0xF2](chip);
+        f_table[0xF2](chip);
     }
     else
     {
-        f_table.i_table[0xF0 + (chip.opcode & 0x000Fu)](chip);
+        f_table[0xF0 + (chip.opcode & 0x000Fu)](chip);
     }
 }
 

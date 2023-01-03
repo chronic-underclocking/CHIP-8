@@ -18,6 +18,7 @@ struct Chip8
     bool display[64 * 32] = {};
     uint16_t opcode;
     InstructionTable table;
+    bool draw;
 
     Chip8();
     bool loadFile(const char* filename);

@@ -39,6 +39,7 @@ Chip8::Chip8()
     stack_pointer = 0;
     delayTimer = 0;
     soundTimer = 0;
+    draw = false;
 }
 
 uint8_t Chip8::random()
@@ -48,17 +49,22 @@ uint8_t Chip8::random()
 
 bool Chip8::loadFile(const char* filename)
 {
-    std::ifstream ROM(filename, std::ios::binary);
-
-    if(!ROM) return false;
-
-    int address = 0x200;
-    while(ROM)
-    {
-        ROM >> memory[address];
-        address++;
-    }
-    return true;
+    std::ifstream ROM(filename, std::ios::binary | std::ios::ate);
+	if(ROM)
+	{
+		std::streampos size = ROM.tellg();
+		char* buffer = new char[size];
+		ROM.seekg(0, std::ios::beg);
+		ROM.read(buffer, size);
+		for(long int i = 0; i < size; i++)
+		{
+			memory[0x200 + i] = buffer[i];
+		}
+		delete[] buffer;
+        ROM.close();
+        return true;
+	}
+    return false;
 }
 
 void Chip8::nextCycle()
