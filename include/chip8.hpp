@@ -20,9 +20,9 @@ struct Chip8
     InstructionTable table;
 
     Chip8();
-    void loadFile(const char* filename);
-    void loadFont();
+    bool loadFile(const char* filename);
     void nextCycle();
+    uint8_t random();
 };
 
 #endif

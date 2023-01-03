@@ -1,8 +1,9 @@
 #ifndef ITABLE
 #define ITABLE
 
-#include "instructions.hpp"
 #include <functional>
+
+struct Chip8;
 
 typedef std::function<void(Chip8&)> instruction;
 
@@ -15,6 +16,10 @@ struct InstructionTable
 {
     instruction i_table[255]; // one over 0xFB
     InstructionTable();
+    instruction& operator[](const int idx)
+    {
+        return i_table[idx];
+    }
 };
 
 #endif

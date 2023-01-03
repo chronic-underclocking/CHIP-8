@@ -1,4 +1,5 @@
 #include "instructionTable.hpp"
+#include "instructions.hpp"
 
 void OP_0(Chip8& chip)
 {
