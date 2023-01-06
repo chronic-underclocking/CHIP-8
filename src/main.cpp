@@ -1,159 +1,245 @@
 #include <iostream>
 #include <conio.h>
 #include <Windows.h>
+#include <thread>
+#include <mutex>
 #include "chip8.hpp"
 
 Chip8 chip;
+
+std::mutex mx;
+
+void setCursorPosition(int x, int y)
+{
+    static const HANDLE hnd = GetStdHandle(STD_OUTPUT_HANDLE);
+    std::cout.flush();
+    COORD coord = { (SHORT) x, (SHORT) y};
+    SetConsoleCursorPosition(hnd, coord);
+}
+
 void checkKeysHeld()
 {
-            if (GetKeyState('1') & 0x8000)
-            {
-                chip.keys[1] = true;
-            }
-            else
-            {
-                chip.keys[1] = false;
-            }
-            if (GetKeyState('2') & 0x8000)
-            {
-                chip.keys[2] = true;
-            }
-            else
-            {
-                chip.keys[2] = false;
-            }
-            if (GetKeyState('3') & 0x8000)
-            {
-                chip.keys[3] = true;
-            }
-            else
-            {
-                chip.keys[3] = false;
-            }
-            if (GetKeyState('4') & 0x8000)
-            {
-                chip.keys[0xC] = true;
-            }
-            else
-            {
-                chip.keys[0xC] = false;
-            }
-            if (GetKeyState('Q') & 0x8000)
-            {
-                chip.keys[4] = true;
-            }
-            else
-            {
-                chip.keys[4] = false;
-            }
-            if (GetKeyState('W') & 0x8000)
-            {
-                chip.keys[5] = true;
-            }
-            else
-            {
-                chip.keys[5] = false;
-            }
-            if (GetKeyState('E') & 0x8000)
-            {
-                chip.keys[6] = true;
-            }
-            else
-            {
-                chip.keys[6] = false;
-            }
-            if (GetKeyState('R') & 0x8000)
-            {
-                chip.keys[0xD] = true;
-            }
-            else
-            {
-                chip.keys[0xD] = false;
-            }
-            if (GetKeyState('A') & 0x8000)
-            {
-                chip.keys[7] = true;
-            }
-            else
-            {
-                chip.keys[7] = false;
-            }
-            if (GetKeyState('S') & 0x8000)
-            {
-                chip.keys[8] = true;
-            }
-            else
-            {
-                chip.keys[8] = false;
-            }
-            if (GetKeyState('D') & 0x8000)
-            {
-                chip.keys[9] = true;
-            }
-            else
-            {
-                chip.keys[9] = false;
-            }
-            if (GetKeyState('F') & 0x8000)
-            {
-                chip.keys[0xE] = true;
-            }
-            else
-            {
-                chip.keys[0xE] = false;
-            }
-            if (GetKeyState('Z') & 0x8000)
-            {
-                chip.keys[0xA] = true;
-            }
-            else
-            {
-                chip.keys[0xA] = false;
-            }
-            if (GetKeyState('X') & 0x8000)
-            {
-                chip.keys[0] = true;
-            }
-            else
-            {
-                chip.keys[0] = false;
-            }
-            if (GetKeyState('C') & 0x8000)
-            {
-                chip.keys[0xB] = true;
-            }
-            else
-            {
-                chip.keys[0xB] = false;
-            }
-            if (GetKeyState('V') & 0x8000)
-            {
-                chip.keys[0xF] = true;
-            }
-            else
-            {
-                chip.keys[0xF] = false;
-            }
+    for(;;)
+    {
+        if (GetKeyState('1') & 0x8000)
+        {
+            mx.lock();
+            chip.keys[1] = true;
+            mx.unlock();
+        }
+        else
+        {
+            mx.lock();
+            chip.keys[1] = false;
+            mx.unlock();
+        }
+        if (GetKeyState('2') & 0x8000)
+        {
+            mx.lock();
+            chip.keys[2] = true;
+            mx.unlock();
+        }
+        else
+        {
+            mx.lock();
+            chip.keys[2] = false;
+            mx.unlock();
+        }
+        if (GetKeyState('3') & 0x8000)
+        {
+            mx.lock();
+            chip.keys[3] = true;
+            mx.unlock();
+        }
+        else
+        {
+            mx.lock();
+            chip.keys[3] = false;
+            mx.unlock();
+        }
+        if (GetKeyState('4') & 0x8000)
+        {
+            mx.lock();
+            chip.keys[0xC] = true;
+            mx.unlock();
+        }
+        else
+        {
+            mx.lock();
+            chip.keys[0xC] = false;
+            mx.unlock();
+        }
+        if (GetKeyState('Q') & 0x8000)
+        {
+            mx.lock();
+            chip.keys[4] = true;
+            mx.unlock();
+        }
+        else
+        {
+            mx.lock();
+            chip.keys[4] = false;
+            mx.unlock();
+        }
+        if (GetKeyState('W') & 0x8000)
+        {
+            mx.lock();
+            chip.keys[5] = true;
+            mx.unlock();        
+        }
+        else
+        {
+            mx.lock();
+            chip.keys[5] = false;
+            mx.unlock();
+        }
+        if (GetKeyState('E') & 0x8000)
+        {
+            mx.lock();
+            chip.keys[6] = true;
+            mx.unlock();
+        }
+        else
+        {
+            mx.lock();
+            chip.keys[6] = false;
+            mx.unlock();
+        }
+        if (GetKeyState('R') & 0x8000)
+        {
+            mx.lock();
+            chip.keys[0xD] = true;
+            mx.unlock();
+        }
+        else
+        {
+            mx.lock();
+            chip.keys[0xD] = false;
+            mx.unlock();
+        }
+        if (GetKeyState('A') & 0x8000)
+        {
+            mx.lock();
+            chip.keys[7] = true;
+            mx.unlock();
+        }
+        else
+        {
+            mx.lock();
+            chip.keys[7] = false;
+            mx.unlock();
+        }
+        if (GetKeyState('S') & 0x8000)
+        {
+            mx.lock();
+            chip.keys[8] = true;
+            mx.unlock();
+        }
+        else
+        {
+            mx.lock();
+            chip.keys[8] = false;
+            mx.unlock();
+        }
+        if (GetKeyState('D') & 0x8000)
+        {
+            mx.lock();
+            chip.keys[9] = true;
+            mx.unlock();
+        }
+        else
+        {
+            mx.lock();
+            chip.keys[9] = false;
+            mx.unlock();
+        }
+        if (GetKeyState('F') & 0x8000)
+        {
+            mx.lock();
+            chip.keys[0xE] = true;
+            mx.unlock();
+        }
+        else
+        {
+            mx.lock();
+            chip.keys[0xE] = false;
+            mx.unlock();
+        }
+        if (GetKeyState('Z') & 0x8000)
+        {
+            mx.lock();
+            chip.keys[0xA] = true;
+            mx.unlock();
+        }
+        else
+        {
+            mx.lock();
+            chip.keys[0xA] = false;
+            mx.unlock();
+        }
+        if (GetKeyState('X') & 0x8000)
+        {
+            mx.lock();
+            chip.keys[0] = true;
+            mx.unlock();
+        }
+        else
+        {
+            mx.lock();
+            chip.keys[0] = false;
+            mx.unlock();
+        }
+        if (GetKeyState('C') & 0x8000)
+        {
+            mx.lock();
+            chip.keys[0xB] = true;
+            mx.unlock();
+        }
+        else
+        {
+            mx.lock();
+            chip.keys[0xB] = false;
+            mx.unlock();
+        }
+        if (GetKeyState('V') & 0x8000)
+        {
+            mx.lock();
+            chip.keys[0xF] = true;
+            mx.unlock();
+        }
+        else
+        {
+            mx.lock();
+            chip.keys[0xF] = false;
+            mx.unlock();
+        }
+    }
 }
 
 int main(int argc, char *argv[])
 {
-    if(chip.loadFile("chip8-test-suite.ch8"))
+    bool prevDisplay[64 * 32] = {};
+    if(chip.loadFile(argv[1]))
     {
-        chip.memory[0x1FF] = 0x1u;
+        std::thread keyPoll(&checkKeysHeld);
+        system("cls");
         for(;;)
         {
-            checkKeysHeld();
+            Sleep(1);
 
             chip.nextCycle();
 
             if(chip.draw)
             {
-                system("cls");
                 for(int i = 0; i < 32; i++)
                 {
                     for(int j = 0; j < 64; j++)
                     {
+                        if(chip.display[(i * 64) + j] == prevDisplay[(i * 64) + j])
+                        {
+                            continue;
+                        }
+                        setCursorPosition(j, i);
                         if(chip.display[(i * 64) + j])
                         {
                             std::cout << (char)254u;
@@ -162,87 +248,14 @@ int main(int argc, char *argv[])
                         {
                             std::cout << " ";
                         }
+                        setCursorPosition(0, 0);
                     }
                     std::cout << std::endl;
                 }
+                std::cout.flush();
+                memcpy(prevDisplay, chip.display, 64 * 32);
                 chip.draw = false;
             }
-/*
-            if(_kbhit())
-            {
-                char key = _getch();
-                if(key == '1')
-                {
-                    chip.keys[1] = true;
-                }
-                else if(key == '2')
-                {
-                    chip.keys[2] = true;
-                }
-                else if(key == '3')
-                {
-                    chip.keys[3] = true;
-                }
-                else if(key == '4')
-                {
-                    chip.keys[0xC] = true;
-                }
-                else if(key == 'Q')
-                {
-                    chip.keys[4] = true;
-                }
-                else if(key == 'W')
-                {
-                    chip.keys[5] = true;
-                }
-                else if(key == 'E')
-                {
-                    chip.keys[6] = true;
-                }
-                else if(key == 'R')
-                {
-                    chip.keys[0xD] = true;
-                }
-                else if(key == 'A')
-                {
-                    chip.keys[7] = true;
-                }
-
-                else if(key == 'S')
-                {
-                    chip.keys[8] = true;
-                }
-
-                else if(key == 'D')
-                {
-                    chip.keys[9] = true;
-                }
-
-                else if(key == 'F')
-                {
-                    chip.keys[0xE] = true;
-                }
-
-                else if(key == 'Z')
-                {
-                    chip.keys[0xA] = true;
-                }
-
-                else if(key == 'X')
-                {
-                    chip.keys[0] = true;
-                }
-
-                else if(key == 'C')
-                {
-                    chip.keys[0xB] = true;
-                }
-
-                else if(key == 'V')
-                {
-                    chip.keys[0xF] = true;
-                }
-            }*/
         }
     }
     else
