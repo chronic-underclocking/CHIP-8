@@ -219,47 +219,55 @@ void checkKeysHeld()
 int main(int argc, char *argv[])
 {
     bool prevDisplay[64 * 32] = {};
-    if(chip.loadFile(argv[1]))
+    if(argc == 3 && chip.loadFile(argv[1]))
     {
+        int delay = std::stoi(argv[2]);
         std::thread keyPoll(&checkKeysHeld);
+        auto prevTime = std::chrono::high_resolution_clock::now();
         system("cls");
         for(;;)
         {
-            Sleep(1);
+            auto currTime = std::chrono::high_resolution_clock::now();
+            float diff = std::chrono::duration<float, std::chrono::milliseconds::period>(currTime - prevTime).count();
 
-            chip.nextCycle();
-
-            if(chip.draw)
+            if(diff > delay)
             {
-                for(int i = 0; i < 32; i++)
+                prevTime = currTime;
+                chip.nextCycle();
+
+                if(chip.draw)
                 {
-                    for(int j = 0; j < 64; j++)
+                    for(int i = 0; i < 32; i++)
                     {
-                        if(chip.display[(i * 64) + j] == prevDisplay[(i * 64) + j])
+                        for(int j = 0; j < 64; j++)
                         {
-                            continue;
+                            if(chip.display[(i * 64) + j] == prevDisplay[(i * 64) + j])
+                            {
+                                continue;
+                            }
+                            setCursorPosition(j, i);
+                            if(chip.display[(i * 64) + j])
+                            {
+                                std::cout << (char)254u;
+                            }
+                            else
+                            {
+                                std::cout << " ";
+                            }
+                            setCursorPosition(0, 0);
                         }
-                        setCursorPosition(j, i);
-                        if(chip.display[(i * 64) + j])
-                        {
-                            std::cout << (char)254u;
-                        }
-                        else
-                        {
-                            std::cout << " ";
-                        }
-                        setCursorPosition(0, 0);
+                        std::cout << std::endl;
                     }
-                    std::cout << std::endl;
+                    std::cout.flush();
+                    memcpy(prevDisplay, chip.display, 64 * 32);
+                    chip.draw = false;
                 }
-                std::cout.flush();
-                memcpy(prevDisplay, chip.display, 64 * 32);
-                chip.draw = false;
             }
         }
     }
     else
     {
-        std::cout << "ROM does not exist.";
+        std::cout << "ROM does not exist, or wrong commands.\n";
+        std::cout << "Usage: main <ROM name> <delay>";
     }
 }

@@ -258,66 +258,82 @@ void _Fx0A(Chip8& chip)
         if(chip.keys[0])
         {
             chip.registers[Vx] = 0;
+            break;
         }
         else if(chip.keys[1])
         {
             chip.registers[Vx] = 1;
+            break;
         }
         else if(chip.keys[2])
         {
             chip.registers[Vx] = 2;
+            break;
         }
         else if(chip.keys[3])
         {
             chip.registers[Vx] = 3;
+            break;
         }
         else if(chip.keys[4])
         {
             chip.registers[Vx] = 4;
+            break;
         }
         else if(chip.keys[5])
         {
             chip.registers[Vx] = 5;
+            break;
         }
         else if(chip.keys[6])
         {
             chip.registers[Vx] = 6;
+            break;
         }
         else if(chip.keys[7])
         {
             chip.registers[Vx] = 7;
+            break;
         }
         else if(chip.keys[8])
         {
             chip.registers[Vx] = 8;
+            break;
         }
         else if(chip.keys[9])
         {
             chip.registers[Vx] = 9;
+            break;
         }
         else if(chip.keys[10])
         {
             chip.registers[Vx] = 10;
+            break;
         }
         else if(chip.keys[11])
         {
             chip.registers[Vx] = 11;
+            break;
         }
         else if(chip.keys[12])
         {
             chip.registers[Vx] = 12;
+            break;
         }
         else if(chip.keys[13])
         {
             chip.registers[Vx] = 13;
+            break;
         }
         else if(chip.keys[14])
         {
             chip.registers[Vx] = 14;
+            break;
         }
         else if(chip.keys[15])
         {
             chip.registers[Vx] = 15;
+            break;
         }
     }
 }
@@ -357,6 +373,7 @@ void _Fx33(Chip8& chip)
     chip.memory[chip.idx_register + 1] = val % 10;
     val /= 10;
     chip.memory[chip.idx_register] = val % 10;
+    
 }
 
 // LD [I], Vx
@@ -364,7 +381,7 @@ void _Fx55(Chip8& chip)
 {
     uint8_t val = ((chip.opcode & 0x0F00u) >> 8u);
 
-    for(uint8_t i = 0; i < val; i++)
+    for(uint8_t i = 0; i <= val; i++)
     {
         chip.memory[chip.idx_register + i] = chip.registers[i];
     }
@@ -375,7 +392,7 @@ void _Fx65(Chip8& chip)
 {
     uint8_t val = ((chip.opcode & 0x0F00u) >> 8u);
 
-    for(uint8_t i = 0; i < val; i++)
+    for(uint8_t i = 0; i <= val; i++)
     {
         chip.registers[i] = chip.memory[chip.idx_register + i];
     }
