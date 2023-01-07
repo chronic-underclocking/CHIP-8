@@ -5,13 +5,12 @@
 #include <mutex>
 #include "chip8.hpp"
 
-Chip8 chip;
-
+static Chip8 chip;
+static const HANDLE hnd = GetStdHandle(STD_OUTPUT_HANDLE);
 std::mutex mx;
 
 void setCursorPosition(int x, int y)
 {
-    static const HANDLE hnd = GetStdHandle(STD_OUTPUT_HANDLE);
     std::cout.flush();
     COORD coord = { (SHORT) x, (SHORT) y};
     SetConsoleCursorPosition(hnd, coord);
@@ -218,13 +217,25 @@ void checkKeysHeld()
 
 int main(int argc, char *argv[])
 {
-    bool prevDisplay[64 * 32] = {};
     if(argc == 3 && chip.loadFile(argv[1]))
     {
         int delay = std::stoi(argv[2]);
+
+        HWND wh = GetConsoleWindow();
+        MoveWindow(wh, 50, 50, 700, 600, TRUE);
+        
+        CONSOLE_CURSOR_INFO cursorInfo;
+        GetConsoleCursorInfo(hnd, &cursorInfo);
+        cursorInfo.dwSize = 1;
+        cursorInfo.bVisible = FALSE;
+        SetConsoleCursorInfo(hnd, &cursorInfo);
+        
         std::thread keyPoll(&checkKeysHeld);
+
+        bool prevDisplay[64 * 32] = {};
         auto prevTime = std::chrono::high_resolution_clock::now();
         system("cls");
+
         for(;;)
         {
             auto currTime = std::chrono::high_resolution_clock::now();
